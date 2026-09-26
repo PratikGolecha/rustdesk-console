@@ -3,6 +3,7 @@ import {
   IsNotEmpty,
   IsOptional,
   IsObject,
+  IsBoolean,
   IsNumber,
   Min,
   IsInt,
@@ -26,6 +27,14 @@ export class CreateStrategyDto {
   @IsObject()
   @IsOptional()
   config_options?: Record<string, string>;
+
+  /**
+   * Accept option keys that are not in the strategy options catalog.
+   * Blocked keys are rejected regardless.
+   */
+  @IsBoolean()
+  @IsOptional()
+  allow_custom?: boolean;
 }
 
 export class UpdateStrategyDto {
@@ -40,6 +49,14 @@ export class UpdateStrategyDto {
   @IsObject()
   @IsOptional()
   config_options?: Record<string, string>;
+
+  /**
+   * Accept option keys that are not in the strategy options catalog.
+   * Blocked keys are rejected regardless.
+   */
+  @IsBoolean()
+  @IsOptional()
+  allow_custom?: boolean;
 }
 
 export class AssignStrategyDto {

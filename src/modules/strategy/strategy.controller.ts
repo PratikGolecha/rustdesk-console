@@ -20,6 +20,7 @@ import {
   AssignmentQueryDto,
 } from './dto/strategy.dto';
 import { RequirePermission } from '../rbac/decorators/require-permission.decorator';
+import { getStrategyOptionsCatalog } from './strategy-options.catalog';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 
 @Controller()
@@ -30,6 +31,12 @@ export class StrategyController {
   @RequirePermission('strategies.view')
   async getStrategies(@Query() query: StrategyQueryDto) {
     return this.strategyService.getStrategies(query);
+  }
+
+  @Get('strategies/options-catalog')
+  @RequirePermission('strategies.view')
+  getOptionsCatalog() {
+    return getStrategyOptionsCatalog();
   }
 
   @Get('strategies/candidates')
