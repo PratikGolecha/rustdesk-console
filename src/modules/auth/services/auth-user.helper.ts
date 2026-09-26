@@ -47,7 +47,8 @@ export class AuthUserHelper {
   }
 
   /**
-   * Find a user by username or email
+   * Find a user by username or email (case-insensitive)
+   * An exact-case match wins if several users differ only by case
    * Includes the info, thirdAuthType, and avatar fields by default
    */
   async findByUsernameOrEmail(
@@ -56,10 +57,14 @@ export class AuthUserHelper {
   ): Promise<User | null> {
     const queryBuilder = this.userRepository
       .createQueryBuilder('user')
-      .where('user.username = :username OR user.email = :email', {
-        username,
-        email: username,
-      });
+      .where(
+        'LOWER(user.username) = LOWER(:username) OR LOWER(user.email) = LOWER(:email)',
+        {
+          username,
+          email: username,
+        },
+      )
+      .orderBy('CASE WHEN user.username = :username THEN 0 ELSE 1 END', 'ASC');
 
     this.applySelects(queryBuilder, options);
 
