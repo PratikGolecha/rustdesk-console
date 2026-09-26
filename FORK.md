@@ -8,6 +8,7 @@ the Golecha RustDesk management console (behind stock `hbbs`/`hbbr`). Default br
 | Change | Upstream status |
 |---|---|
 | All Chinese comments, API/exception messages, logs, emails, OIDC pages and docs translated to English | PR [databk/rustdesk-console#366](https://github.com/databk/rustdesk-console/pull/366) |
+| Heartbeat asks the client to (re-)upload system info (`sysinfo: true`) when the console has none for that device, so device name / user / OS / icon self-heal after a device record is deleted - `heartbeat.service.ts` | not submitted |
 | Case-insensitive login (`Pratik` = `pratik`; exact-case match wins if two users differ only by case) - `findByUsernameOrEmail` in `src/modules/auth/services/auth-user.helper.ts` | not submitted |
 
 Companion frontend fork: [PratikGolecha/rustdesk-console-web](https://github.com/PratikGolecha/rustdesk-console-web) (`golecha` branch).

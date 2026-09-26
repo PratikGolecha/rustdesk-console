@@ -6,6 +6,7 @@ import { Peer } from '../../common/entities';
 import { ActiveConnection } from './entities/active-connection.entity';
 import { DisconnectStoreService } from './services/disconnect-store.service';
 import { StrategyService } from '../strategy/strategy.service';
+import { Sysinfo } from '../sysinfo/entities/sysinfo.entity';
 
 @Injectable()
 export class HeartbeatService {
@@ -16,6 +17,8 @@ export class HeartbeatService {
     private peerRepository: Repository<Peer>,
     @InjectRepository(ActiveConnection)
     private activeConnectionRepository: Repository<ActiveConnection>,
+    @InjectRepository(Sysinfo)
+    private sysinfoRepository: Repository<Sysinfo>,
     private disconnectStoreService: DisconnectStoreService,
     private strategyService: StrategyService,
   ) {}
@@ -66,7 +69,14 @@ export class HeartbeatService {
       data.modified_at,
     );
 
+    // Ask the client to (re-)upload its system info when we have none for this device, e.g. after the
+    // device record was deleted while the client kept running. Clients only re-upload on request.
+    const needsSysinfo =
+      (await this.sysinfoRepository.count({ where: { uuid: data.uuid } })) ===
+      0;
+
     return {
+      ...(needsSysinfo ? { sysinfo: true } : {}),
       ...(disconnect.length > 0 ? { disconnect } : {}),
       ...(strategyResult
         ? {

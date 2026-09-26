@@ -6,9 +6,13 @@ import { DisconnectStoreService } from './services/disconnect-store.service';
 import { Peer } from '../../common/entities';
 import { ActiveConnection } from './entities/active-connection.entity';
 import { StrategyModule } from '../strategy/strategy.module';
+import { Sysinfo } from '../sysinfo/entities/sysinfo.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Peer, ActiveConnection]), StrategyModule],
+  imports: [
+    TypeOrmModule.forFeature([Peer, ActiveConnection, Sysinfo]),
+    StrategyModule,
+  ],
   controllers: [HeartbeatController],
   providers: [HeartbeatService, DisconnectStoreService],
   exports: [HeartbeatService, DisconnectStoreService],
