@@ -15,6 +15,8 @@ export type PermissionCode =
   | 'user_groups.edit'
   | 'user_groups.delete'
   | 'user_groups.membership'
+  | 'access_control.view'
+  | 'access_control.edit'
   | 'devices.view'
   | 'devices.edit'
   | 'devices.status'
@@ -151,6 +153,20 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     'Manage user group membership',
     'global',
     ['user_groups.view'],
+  ),
+  definition(
+    'access_control.view',
+    'access_control',
+    'view',
+    'View access control rules',
+  ),
+  definition(
+    'access_control.edit',
+    'access_control',
+    'edit',
+    'Edit access control rules',
+    'global',
+    ['access_control.view'],
   ),
   definition('devices.view', 'devices', 'view', 'View devices', 'device_group'),
   definition(

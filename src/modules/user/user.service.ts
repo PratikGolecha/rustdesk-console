@@ -17,6 +17,10 @@ import { User, UserStatus, UserInfo } from './entities/user.entity';
 import { UserToken } from './entities/user-token.entity';
 import { Invitation } from './entities/invitation.entity';
 import { DeviceGroupUserPermission } from '../device-group/entities/device-group-user-permission.entity';
+import {
+  userVisibleViaDeviceGroupRule,
+  userVisibleViaGroupRule,
+} from '../access-control/access-sql';
 import { UserUserPermission } from '../device-group/entities/user-user-permission.entity';
 import {
   CreateUserDto,
@@ -143,6 +147,8 @@ export class UserService {
             INNER JOIN device_group_user_permissions udgp ON p.deviceGroupGuid = udgp.deviceGroupGuid
             WHERE udgp.userGuid = :userGuid AND p.userGuid = user.guid
           )
+          OR ${userVisibleViaGroupRule('user')}
+          OR ${userVisibleViaDeviceGroupRule('user')}
         )`,
         { userGuid },
       );

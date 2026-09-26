@@ -33,6 +33,9 @@ import { OidcAuthState } from './modules/oidc/entities/oidc-auth-state.entity';
 import { DeviceGroup } from './modules/device-group/entities/device-group.entity';
 import { DeviceGroupUserPermission } from './modules/device-group/entities/device-group-user-permission.entity';
 import { UserUserPermission } from './modules/device-group/entities/user-user-permission.entity';
+import { UserGroupUserGroupPermission } from './modules/access-control/entities/user-group-user-group-permission.entity';
+import { UserGroupDeviceGroupPermission } from './modules/access-control/entities/user-group-device-group-permission.entity';
+import { AccessControlModule } from './modules/access-control/access-control.module';
 import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
 import { LoginSession } from './modules/auth/entities/login-session.entity';
 import { PasskeyCredential } from './modules/auth/entities/passkey-credential.entity';
@@ -118,6 +121,8 @@ import { ConsoleAuditInterceptor } from './modules/rbac/interceptors/console-aud
               DeviceGroup,
               DeviceGroupUserPermission,
               UserUserPermission,
+              UserGroupUserGroupPermission,
+              UserGroupDeviceGroupPermission,
               LoginSession,
               PasskeyCredential,
               SystemSetting,
@@ -158,6 +163,8 @@ import { ConsoleAuditInterceptor } from './modules/rbac/interceptors/console-aud
               DeviceGroup,
               DeviceGroupUserPermission,
               UserUserPermission,
+              UserGroupUserGroupPermission,
+              UserGroupDeviceGroupPermission,
               LoginSession,
               PasskeyCredential,
               SystemSetting,
@@ -192,6 +199,7 @@ import { ConsoleAuditInterceptor } from './modules/rbac/interceptors/console-aud
     UpdateCheckModule,
     NexusModule,
     UserGroupModule,
+    AccessControlModule,
     RbacModule,
   ],
   providers: [

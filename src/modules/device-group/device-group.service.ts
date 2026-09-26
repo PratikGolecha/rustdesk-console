@@ -12,6 +12,12 @@ import { User, UserStatus } from '../user/entities/user.entity';
 import { Peer, PeerStatus } from '../../common/entities/peer.entity';
 import { Sysinfo } from '../../common/entities/sysinfo.entity';
 import { Strategy } from '../strategy/entities/strategy.entity';
+import {
+  deviceGroupVisibleViaGroupRule,
+  peerVisibleViaGroupRule,
+  userVisibleViaDeviceGroupRule,
+  userVisibleViaGroupRule,
+} from '../access-control/access-sql';
 import { DeviceGroupUserPermission } from './entities/device-group-user-permission.entity';
 import {
   DeviceStatus,
@@ -117,12 +123,13 @@ export class DeviceGroupService {
     // Regular users can only see device groups they have permission for
     let queryBuilder = this.deviceGroupRepository
       .createQueryBuilder('dg')
-      .innerJoin(
-        'device_group_user_permissions',
-        'udgp',
-        'udgp.deviceGroupGuid = dg.guid',
+      .where(
+        `(EXISTS (
+          SELECT 1 FROM device_group_user_permissions udgp
+          WHERE udgp.deviceGroupGuid = dg.guid AND udgp.userGuid = :userGuid
+        ) OR ${deviceGroupVisibleViaGroupRule('dg.guid')})`,
+        { userGuid },
       )
-      .where('udgp.userGuid = :userGuid', { userGuid })
       .select(['dg.guid', 'dg.name', 'dg.note'])
       .orderBy('dg.name', 'ASC')
       .skip(skip)
@@ -233,6 +240,8 @@ export class DeviceGroupService {
             INNER JOIN device_group_user_permissions udgp ON p.deviceGroupGuid = udgp.deviceGroupGuid
             WHERE udgp.userGuid = :userGuid AND p.userGuid = user.guid
           )
+          OR ${userVisibleViaGroupRule('user')}
+          OR ${userVisibleViaDeviceGroupRule('user')}
         )`,
         { userGuid },
       );
@@ -524,6 +533,8 @@ export class DeviceGroupService {
             SELECT 1 FROM device_group_user_permissions udgp
             WHERE udgp.userGuid = :userGuid AND udgp.deviceGroupGuid = peer.deviceGroupGuid
           )
+          OR ${deviceGroupVisibleViaGroupRule('peer.deviceGroupGuid')}
+          OR ${peerVisibleViaGroupRule('peer')}
         )`,
         { userGuid },
       );

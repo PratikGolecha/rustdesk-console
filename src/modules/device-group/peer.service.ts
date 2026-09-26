@@ -4,6 +4,10 @@ import { Repository, In } from 'typeorm';
 import { Peer, Sysinfo } from '../../common/entities';
 import { User } from '../user/entities/user.entity';
 import { Strategy } from '../strategy/entities/strategy.entity';
+import {
+  deviceGroupVisibleViaGroupRule,
+  peerVisibleViaGroupRule,
+} from '../access-control/access-sql';
 import { PeerQueryDto } from './dto/peer.dto';
 
 /**
@@ -94,6 +98,9 @@ export class PeerService {
             SELECT 1 FROM user_user_permissions uup
             WHERE uup.userGuid = :userGuid AND uup.targetUserGuid = peer.userGuid
           )
+          -- Group-level rules (shared user group, user group -> user group / device group)
+          OR ${deviceGroupVisibleViaGroupRule('peer.deviceGroupGuid')}
+          OR ${peerVisibleViaGroupRule('peer')}
         )`,
         { userGuid },
       );
