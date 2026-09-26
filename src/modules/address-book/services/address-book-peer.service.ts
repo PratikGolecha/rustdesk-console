@@ -395,6 +395,64 @@ export class AddressBookPeerService {
   }
 
   /**
+   * Idempotently place a registered device into an address book (used by the
+   * `rustdesk --assign` command). Creates the entry when absent, otherwise
+   * updates only the provided fields and adds missing tags.
+   *
+   * @param addressBookGuid Target address book
+   * @param peerUuid Peer uuid (peers.uuid, which is what entries reference)
+   * @param fields Optional alias / password / note / tag names
+   * @param getOrCreateTag Tag resolver from the tag service
+   * @returns Whether a new entry was created
+   */
+  async upsertAssignedPeer(
+    addressBookGuid: string,
+    peerUuid: string,
+    fields: {
+      alias?: string;
+      password?: string;
+      note?: string;
+      tags?: string[];
+    },
+    getOrCreateTag: (
+      addressBookGuid: string,
+      tagName: string,
+    ) => Promise<string>,
+  ): Promise<{ created: boolean }> {
+    let entry = await this.addressBookPeerRepository.findOne({
+      where: { addressBookGuid, deviceId: peerUuid },
+    });
+    const created = !entry;
+    if (!entry) {
+      entry = this.addressBookPeerRepository.create({
+        guid: uuidv4(),
+        addressBookGuid,
+        deviceId: peerUuid,
+      });
+    }
+    if (fields.alias !== undefined) entry.alias = fields.alias;
+    if (fields.password !== undefined) entry.password = fields.password;
+    if (fields.note !== undefined) entry.note = fields.note;
+    await this.addressBookPeerRepository.save(entry);
+
+    for (const tagName of fields.tags || []) {
+      const tagGuid = await getOrCreateTag(addressBookGuid, tagName);
+      const existing = await this.addressBookPeerTagRepository.findOne({
+        where: { peerGuid: entry.guid, tagGuid },
+      });
+      if (!existing) {
+        await this.addressBookPeerTagRepository.save(
+          this.addressBookPeerTagRepository.create({
+            peerGuid: entry.guid,
+            tagGuid,
+          }),
+        );
+      }
+    }
+    return { created };
+  }
+
+  /**
    * Find or create a device record
    * Look up the device with the given id in the peers table; if not found and the id is in IP format, create it automatically
    *

@@ -34,6 +34,7 @@ import {
   BatchSessionsDto,
   ChangePasswordDto,
 } from './dto/user.dto';
+import { AllowApiToken } from '../api-token/decorators/allow-api-token.decorator';
 
 @Controller()
 export class UserController {
@@ -42,6 +43,7 @@ export class UserController {
     private readonly rbacAuthorizationService: RbacAuthorizationService,
   ) {}
 
+  @AllowApiToken('read')
   @Get('users')
   async getAccessibleUsers(
     @CurrentUser('id') userId: string,
@@ -56,6 +58,7 @@ export class UserController {
     );
   }
 
+  @AllowApiToken('manage')
   @Post('users')
   @RequirePermission('users.create')
   @HttpCode(HttpStatus.OK)
@@ -144,6 +147,7 @@ export class UserController {
     return this.userService.acceptInvitation(dto);
   }
 
+  @AllowApiToken('manage')
   @Patch('users/batch/status')
   @RequirePermission('users.status')
   @HttpCode(HttpStatus.OK)
@@ -189,6 +193,7 @@ export class UserController {
     return this.userService.forceLogout(dto.user_guids, actorGuid);
   }
 
+  @AllowApiToken('read')
   @Get('users/:guid')
   @RequirePermission('users.view')
   async getUser(@Param('guid') guid: string) {
@@ -268,6 +273,7 @@ export class UserController {
     return { message: 'User deleted' };
   }
 
+  @AllowApiToken('manage')
   @Patch('users/:guid/security')
   @RequirePermission('users.security')
   @HttpCode(HttpStatus.OK)

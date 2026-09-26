@@ -29,6 +29,9 @@ export type PermissionCode =
   | 'strategies.delete'
   | 'strategies.assign'
   | 'audit.view'
+  | 'api_tokens.view'
+  | 'api_tokens.create'
+  | 'api_tokens.revoke'
   | 'roles.view'
   | 'roles.assign';
 
@@ -240,6 +243,23 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     'device_group',
   ),
   definition('audit.view', 'audit', 'view', 'View audit data'),
+  definition('api_tokens.view', 'api_tokens', 'view', 'View API tokens'),
+  definition(
+    'api_tokens.create',
+    'api_tokens',
+    'create',
+    'Create API tokens',
+    'global',
+    ['api_tokens.view'],
+  ),
+  definition(
+    'api_tokens.revoke',
+    'api_tokens',
+    'revoke',
+    'Revoke API tokens',
+    'global',
+    ['api_tokens.view'],
+  ),
   systemDefinition('roles.create', 'create', 'Create roles'),
   systemDefinition('roles.edit', 'edit', 'Edit roles'),
   systemDefinition('roles.delete', 'delete', 'Delete roles'),
