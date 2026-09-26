@@ -39,3 +39,27 @@ back it up before switching images.
 - Usernames used to be case-sensitive; with the patch above they are not.
 - Clients bind a device to a user when they log in and unbind it on logout; a new device must have heartbeated once.
 - Login is rate-limited (HTTP 429) after a burst of attempts from one IP.
+
+## Pro-parity features added in this fork (2026-09)
+
+| Feature | Where | Notes |
+|---|---|---|
+| Cross-group access (shared group, group->group, group->device group) | `src/modules/access-control` | manage in the console: user groups -> Access |
+| Client setup / config generator (+ multi-relay notes) | `src/modules/client-config`, `docs/client-setup-and-relays.md` | needs `RUSTDESK_KEY_FILE` (public key file) |
+| API tokens + `rustdesk --assign` endpoint (`POST /api/devices/cli`) | `src/modules/api-token` | tokens are stored hashed |
+| CLI tools | `scripts/cli/console.py` | stdlib-only Python |
+| Strategy options catalog + validation | `src/modules/strategy/strategy-options.catalog.ts` | options verified against RustDesk client 1.4.9 |
+| Control roles (console side) | `src/modules/control-roles` | enforced by the patched relay (see PratikGolecha/rustdesk-server) |
+| Relay callbacks `POST /api/relay/authorize`, `/api/relay/verify` | `src/modules/relay-verify` | needs `RELAY_SHARED_SECRET` (authorize) / `RELAY_VERIFY_SECRET` (verify) |
+| Browser web client config | `src/modules/web-client` | env `WEB_CLIENT_ENABLED`, `WEB_CLIENT_ID_SERVER`, `WEB_CLIENT_API_SERVER`, `RUSTDESK_KEY_FILE` |
+
+Not built (not possible with this stack): changing a device's ID from the console - only the device itself can change its ID.
+
+## Acknowledgements and licences
+
+Ideas and reference behaviour were studied from these open-source projects; unless noted, the code here was written for this fork against RustDesk's own client source and public Pro documentation:
+- [databk/rustdesk-console](https://github.com/databk/rustdesk-console) - the base of this fork (AGPL-3.0).
+- [lejianwen/rustdesk-api](https://github.com/lejianwen/rustdesk-api) (MIT) - shared-group visibility semantics, `MUST_LOGIN` and web-client integration approach.
+- [lejianwen/rustdesk-server](https://github.com/lejianwen/rustdesk-server) (AGPL-3.0) - `MUST_LOGIN` behaviour reference.
+- [UNITRONIX/BetterDesk](https://github.com/UNITRONIX/BetterDesk) (AGPL-3.0) - reference for enrollment tokens, client generator and web remote designs.
+- RustDesk client and server sources (AGPL-3.0) - wire formats, option keys, `--assign` / `--config` contracts.
