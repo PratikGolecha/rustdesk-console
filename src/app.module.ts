@@ -62,6 +62,9 @@ import { RolePermission } from './modules/rbac/entities/role-permission.entity';
 import { UserRoleAssignment } from './modules/rbac/entities/user-role-assignment.entity';
 import { UserRoleAssignmentDeviceGroup } from './modules/rbac/entities/user-role-assignment-device-group.entity';
 import { ConsoleAudit } from './modules/rbac/entities/console-audit.entity';
+import { ControlRoleModule } from './modules/control-role/control-role.module';
+import { ControlRole } from './modules/control-role/entities/control-role.entity';
+import { ControlRoleAssignment } from './modules/control-role/entities/control-role-assignment.entity';
 import { RbacGuard } from './modules/rbac/guards/rbac.guard';
 import { ConsoleAuditInterceptor } from './modules/rbac/interceptors/console-audit.interceptor';
 
@@ -142,6 +145,8 @@ import { ConsoleAuditInterceptor } from './modules/rbac/interceptors/console-aud
               UserRoleAssignmentDeviceGroup,
               ConsoleAudit,
               ApiToken,
+              ControlRole,
+              ControlRoleAssignment,
             ],
             synchronize: true,
             logging: false,
@@ -185,6 +190,8 @@ import { ConsoleAuditInterceptor } from './modules/rbac/interceptors/console-aud
               UserRoleAssignmentDeviceGroup,
               ConsoleAudit,
               ApiToken,
+              ControlRole,
+              ControlRoleAssignment,
             ],
             synchronize: true,
             logging: false,
@@ -212,6 +219,7 @@ import { ConsoleAuditInterceptor } from './modules/rbac/interceptors/console-aud
     ClientConfigModule,
     ApiTokenModule,
     RelayVerifyModule,
+    ControlRoleModule,
   ],
   providers: [
     {

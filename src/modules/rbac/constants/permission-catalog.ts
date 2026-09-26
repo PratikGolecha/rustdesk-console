@@ -30,6 +30,8 @@ export type PermissionCode =
   | 'strategies.edit'
   | 'strategies.delete'
   | 'strategies.assign'
+  | 'control_roles.view'
+  | 'control_roles.edit'
   | 'audit.view'
   | 'api_tokens.view'
   | 'api_tokens.create'
@@ -257,6 +259,20 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     'assign',
     'Assign strategies',
     'device_group',
+  ),
+  definition(
+    'control_roles.view',
+    'control_roles',
+    'view',
+    'View control roles',
+  ),
+  definition(
+    'control_roles.edit',
+    'control_roles',
+    'edit',
+    'Manage control roles and their assignments',
+    'global',
+    ['control_roles.view', 'users.view'],
   ),
   definition('audit.view', 'audit', 'view', 'View audit data'),
   definition('api_tokens.view', 'api_tokens', 'view', 'View API tokens'),
