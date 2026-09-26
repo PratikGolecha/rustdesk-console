@@ -25,6 +25,7 @@ import {
   PermissionScope,
   RbacAuthorizationService,
 } from '../rbac/services/rbac-authorization.service';
+import { validateConfigOptions } from './strategy-options.catalog';
 
 @Injectable()
 export class StrategyService {
@@ -43,7 +44,24 @@ export class StrategyService {
     private readonly rbacAuthorizationService: RbacAuthorizationService,
   ) {}
 
+  private assertValidConfigOptions(
+    options: Record<string, string> | undefined,
+    allowCustom?: boolean,
+  ) {
+    const issues = validateConfigOptions(options, allowCustom === true);
+    if (issues.length > 0) {
+      throw new BadRequestException({
+        statusCode: 400,
+        message: `Invalid config_options: ${issues
+          .map((i) => `${i.key} ${i.reason}`)
+          .join('; ')}`,
+        errors: issues,
+      });
+    }
+  }
+
   async createStrategy(dto: CreateStrategyDto) {
+    this.assertValidConfigOptions(dto.config_options, dto.allow_custom);
     const existing = await this.strategyRepository.findOne({
       where: { name: dto.name },
     });
@@ -93,6 +111,7 @@ export class StrategyService {
     }
 
     if (dto.config_options !== undefined) {
+      this.assertValidConfigOptions(dto.config_options, dto.allow_custom);
       strategy.configOptions = JSON.stringify(dto.config_options);
     }
 

@@ -55,6 +55,7 @@ import { RbacModule } from './modules/rbac/rbac.module';
 import { ClientConfigModule } from './modules/client-config/client-config.module';
 import { ApiTokenModule } from './modules/api-token/api-token.module';
 import { ApiToken } from './modules/api-token/entities/api-token.entity';
+import { RelayVerifyModule } from './modules/relay-verify/relay-verify.module';
 import { Role } from './modules/rbac/entities/role.entity';
 import { RolePermission } from './modules/rbac/entities/role-permission.entity';
 import { UserRoleAssignment } from './modules/rbac/entities/user-role-assignment.entity';
@@ -208,6 +209,7 @@ import { ConsoleAuditInterceptor } from './modules/rbac/interceptors/console-aud
     RbacModule,
     ClientConfigModule,
     ApiTokenModule,
+    RelayVerifyModule,
   ],
   providers: [
     {
