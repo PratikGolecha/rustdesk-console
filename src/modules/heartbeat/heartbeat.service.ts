@@ -2,11 +2,10 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { HeartbeatDto } from './dto/heartbeat.dto';
-import { Peer } from '../../common/entities';
+import { Peer, Sysinfo } from '../../common/entities';
 import { ActiveConnection } from './entities/active-connection.entity';
 import { DisconnectStoreService } from './services/disconnect-store.service';
 import { StrategyService } from '../strategy/strategy.service';
-import { Sysinfo } from '../sysinfo/entities/sysinfo.entity';
 
 @Injectable()
 export class HeartbeatService {

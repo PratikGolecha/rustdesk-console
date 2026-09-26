@@ -3,10 +3,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { HeartbeatController } from './heartbeat.controller';
 import { HeartbeatService } from './heartbeat.service';
 import { DisconnectStoreService } from './services/disconnect-store.service';
-import { Peer } from '../../common/entities';
+import { Peer, Sysinfo } from '../../common/entities';
 import { ActiveConnection } from './entities/active-connection.entity';
 import { StrategyModule } from '../strategy/strategy.module';
-import { Sysinfo } from '../sysinfo/entities/sysinfo.entity';
 
 @Module({
   imports: [
