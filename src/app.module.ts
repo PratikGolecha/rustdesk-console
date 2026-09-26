@@ -52,6 +52,7 @@ import { NexusBuild } from './modules/nexus/entities/nexus-build.entity';
 import { UserGroupModule } from './modules/user-group/user-group.module';
 import { UserGroup } from './modules/user-group/entities/user-group.entity';
 import { RbacModule } from './modules/rbac/rbac.module';
+import { ClientConfigModule } from './modules/client-config/client-config.module';
 import { Role } from './modules/rbac/entities/role.entity';
 import { RolePermission } from './modules/rbac/entities/role-permission.entity';
 import { UserRoleAssignment } from './modules/rbac/entities/user-role-assignment.entity';
@@ -201,6 +202,7 @@ import { ConsoleAuditInterceptor } from './modules/rbac/interceptors/console-aud
     UserGroupModule,
     AccessControlModule,
     RbacModule,
+    ClientConfigModule,
   ],
   providers: [
     {
