@@ -46,6 +46,7 @@ import { LdapModule } from './modules/ldap/ldap.module';
 import { StrategyModule } from './modules/strategy/strategy.module';
 import { Strategy } from './modules/strategy/entities/strategy.entity';
 import { UpdateCheckModule } from './modules/update-check/update-check.module';
+import { WebClientModule } from './modules/web-client/web-client.module';
 import { NexusModule } from './modules/nexus/nexus.module';
 import { NexusToken } from './modules/nexus/entities/nexus-token.entity';
 import { NexusBuild } from './modules/nexus/entities/nexus-build.entity';
@@ -203,6 +204,7 @@ import { ConsoleAuditInterceptor } from './modules/rbac/interceptors/console-aud
     LdapModule,
     StrategyModule,
     UpdateCheckModule,
+    WebClientModule,
     NexusModule,
     UserGroupModule,
     AccessControlModule,
