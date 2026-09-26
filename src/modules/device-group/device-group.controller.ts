@@ -29,6 +29,7 @@ import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { AdminGuard } from '../../common/guards/admin.guard';
 import { RequirePermission } from '../rbac/decorators/require-permission.decorator';
 import { RbacAuthorizationService } from '../rbac/services/rbac-authorization.service';
+import { AllowApiToken } from '../api-token/decorators/allow-api-token.decorator';
 
 /**
  * Device group controller
@@ -117,6 +118,7 @@ export class DeviceGroupController {
   // ============ Administrator API endpoints ============
 
   /** Get the full device group management list. */
+  @AllowApiToken('read')
   @Get('device-groups')
   @UseGuards(AdminGuard)
   async getDeviceGroups(
@@ -265,6 +267,7 @@ export class DeviceGroupController {
    * @param query Query parameters (pagination, filtering)
    * @returns Device list (paginated)
    */
+  @AllowApiToken('read')
   @Get('devices')
   @RequirePermission('devices.view')
   async getDevices(
@@ -336,6 +339,7 @@ export class DeviceGroupController {
    * @param guid Device GUID
    * @returns Deletion result
    */
+  @AllowApiToken('manage')
   @Delete('devices/:guid')
   @RequirePermission('devices.delete')
   @HttpCode(HttpStatus.OK)

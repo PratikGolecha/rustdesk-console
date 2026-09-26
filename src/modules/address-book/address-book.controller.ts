@@ -31,6 +31,7 @@ import {
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { AddressBookRuleService } from './services/address-book-rule.service';
 import { RequirePermission } from '../rbac/decorators/require-permission.decorator';
+import { AllowApiToken } from '../api-token/decorators/allow-api-token.decorator';
 
 /**
  * Address book controller
@@ -133,6 +134,7 @@ export class AddressBookController {
    * @param userId Current user ID (extracted from the JWT token)
    * @returns GUID of the personal address book
    */
+  @AllowApiToken('read')
   @Get('personal')
   @HttpCode(HttpStatus.OK)
   getPersonalAddressBookGet(@CurrentUser('id') userId: number) {
@@ -212,6 +214,7 @@ export class AddressBookController {
    * @param userId Current user ID (extracted from the JWT token)
    * @returns Shared address book list (paginated)
    */
+  @AllowApiToken('read')
   @Get('shared/profiles')
   @HttpCode(HttpStatus.OK)
   getSharedAddressBooksGet(

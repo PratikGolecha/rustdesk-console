@@ -21,11 +21,13 @@ import {
 } from './dto/strategy.dto';
 import { RequirePermission } from '../rbac/decorators/require-permission.decorator';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
+import { AllowApiToken } from '../api-token/decorators/allow-api-token.decorator';
 
 @Controller()
 export class StrategyController {
   constructor(private readonly strategyService: StrategyService) {}
 
+  @AllowApiToken('read')
   @Get('strategies')
   @RequirePermission('strategies.view')
   async getStrategies(@Query() query: StrategyQueryDto) {

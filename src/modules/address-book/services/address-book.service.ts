@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
@@ -47,6 +51,68 @@ export class AddressBookService {
     private readonly legacyService: AddressBookLegacyService,
     private readonly permissionService: AddressBookPermissionService,
   ) {}
+
+  // ============ Assignment by API token (rustdesk --assign) ============
+
+  /**
+   * Resolve an address book by name for the assign command.
+   * "Personal" / "My address book" mean the target user's personal book;
+   * anything else is matched case-insensitively against non-personal books,
+   * preferring one owned by the target user or the acting user.
+   */
+  async resolveBookForAssign(
+    name: string,
+    targetUserGuid: string | null,
+    actorGuid: string,
+  ): Promise<AddressBook> {
+    const wanted = name.trim().toLowerCase();
+    if (['personal', 'my address book'].includes(wanted)) {
+      if (!targetUserGuid) {
+        throw new BadRequestException(
+          'address_book_name refers to a personal address book but the device has no user; also pass --user_name',
+        );
+      }
+      const { guid } = await this.getPersonalAddressBook(targetUserGuid);
+      return (await this.addressBookRepository.findOne({ where: { guid } }))!;
+    }
+    const candidates = (
+      await this.addressBookRepository
+        .createQueryBuilder('ab')
+        .where('LOWER(ab.name) = :name', { name: wanted })
+        .andWhere('ab.isPersonal = :personal', { personal: false })
+        .getMany()
+    ).filter(Boolean);
+    if (candidates.length === 0) {
+      throw new NotFoundException(`Address book "${name}" does not exist`);
+    }
+    if (candidates.length === 1) return candidates[0];
+    const preferred = candidates.filter(
+      (ab) => ab.owner === targetUserGuid || ab.owner === actorGuid,
+    );
+    if (preferred.length === 1) return preferred[0];
+    throw new BadRequestException(
+      `Address book name "${name}" is ambiguous (${candidates.length} matches)`,
+    );
+  }
+
+  /** Idempotently add/update a device entry in an address book. */
+  async assignPeerToBook(
+    addressBookGuid: string,
+    peerUuid: string,
+    fields: {
+      alias?: string;
+      password?: string;
+      note?: string;
+      tags?: string[];
+    },
+  ) {
+    return this.peerService.upsertAssignedPeer(
+      addressBookGuid,
+      peerUuid,
+      fields,
+      (guid, tag) => this.tagService.getOrCreateTag(guid, tag),
+    );
+  }
 
   // ============ Basic address book management ============
 

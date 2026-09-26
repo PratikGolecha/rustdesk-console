@@ -20,11 +20,13 @@ import {
   UserGroupQueryDto,
 } from './dto/user-group.dto';
 import { UserGroupService } from './user-group.service';
+import { AllowApiToken } from '../api-token/decorators/allow-api-token.decorator';
 
 @Controller('user-groups')
 export class UserGroupController {
   constructor(private readonly userGroupService: UserGroupService) {}
 
+  @AllowApiToken('read')
   @Get()
   @RequirePermission('user_groups.view')
   getGroups(@Query() query: UserGroupQueryDto) {
@@ -58,6 +60,7 @@ export class UserGroupController {
     return this.userGroupService.deleteGroup(guid, actorGuid);
   }
 
+  @AllowApiToken('read')
   @Get(':guid/users')
   @RequirePermission('user_groups.view')
   getGroupUsers(

@@ -67,6 +67,19 @@ export class Peer {
   @Column({ type: 'varchar', nullable: true })
   note: string | null;
 
+  /**
+   * Console-side device name override (set by `rustdesk --assign --device_name`).
+   * When set it is shown instead of the hostname reported by the client.
+   */
+  @Column({ type: 'varchar', nullable: true })
+  deviceName: string | null;
+
+  /**
+   * Console-side device username override (`--device_username`).
+   */
+  @Column({ type: 'varchar', nullable: true })
+  deviceUsername: string | null;
+
   @ManyToOne('Strategy', () => Strategy, { onDelete: 'SET NULL' })
   @JoinColumn({ name: 'strategyGuid' })
   strategy: any;

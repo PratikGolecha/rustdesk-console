@@ -24,6 +24,7 @@ import {
   RequireSuperAdmin,
 } from '../rbac/decorators/require-permission.decorator';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
+import { AllowApiToken } from '../api-token/decorators/allow-api-token.decorator';
 
 /**
  * Audit controller
@@ -172,6 +173,7 @@ export class AuditsController {
    * @returns Connection audit list
    */
   @RequirePermission('audit.view')
+  @AllowApiToken('read')
   @Get('conn')
   async queryConnectionAudits(
     @CurrentUser('id') userId: string,
@@ -224,6 +226,7 @@ export class AuditsController {
    * @returns File audit list
    */
   @RequirePermission('audit.view')
+  @AllowApiToken('read')
   @Get('file')
   async queryFileAudits(
     @Query('deviceId') deviceId?: string,
@@ -266,6 +269,7 @@ export class AuditsController {
    * @returns Alarm audit list
    */
   @RequirePermission('audit.view')
+  @AllowApiToken('read')
   @Get('alarm')
   async queryAlarmAudits(
     @Query('deviceId') deviceId?: string,
@@ -306,6 +310,7 @@ export class AuditsController {
    * @returns Console audit list
    */
   @RequirePermission('audit.view')
+  @AllowApiToken('read')
   @Get('console')
   queryConsoleAudits(
     @Query('operator') operator?: string,

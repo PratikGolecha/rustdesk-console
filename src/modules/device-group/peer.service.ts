@@ -247,8 +247,8 @@ export class PeerService {
           ? strategyMap.get(peer.strategyGuid)?.name || ''
           : '',
         info: {
-          device_name: sysinfo?.hostname || '',
-          username: sysinfo?.username || '',
+          device_name: peer.deviceName || sysinfo?.hostname || '',
+          username: peer.deviceUsername || sysinfo?.username || '',
           os: sysinfo?.os || '',
           version: formatVersion(peer.ver),
           cpu: sysinfo?.cpu || '',
