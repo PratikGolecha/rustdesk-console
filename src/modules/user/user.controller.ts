@@ -43,7 +43,6 @@ export class UserController {
     private readonly rbacAuthorizationService: RbacAuthorizationService,
   ) {}
 
-  @AllowApiToken('read')
   @Get('users')
   async getAccessibleUsers(
     @CurrentUser('id') userId: string,
