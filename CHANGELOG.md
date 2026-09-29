@@ -1,3 +1,31 @@
+# [1.9.0](https://github.com/databk/rustdesk-console/compare/1.8.1...1.9.0) (2026-09-27)
+
+
+### Bug Fixes
+
+* **ci:** build arm64 musl SEA on native ARM64 runner ([#340](https://github.com/databk/rustdesk-console/issues/340)) ([ab84c5c](https://github.com/databk/rustdesk-console/commit/ab84c5cb90e71f94b2f056cbd0e7102a1f5ef6e3)), closes [#339](https://github.com/databk/rustdesk-console/issues/339)
+* **ci:** build arm64 musl SEA via QEMU on x64 runner ([#339](https://github.com/databk/rustdesk-console/issues/339)) ([db317fb](https://github.com/databk/rustdesk-console/commit/db317fb82b6fa9329b03b3de5b7404c17bce2a12))
+* **dashboard:** include current day in trends range ([#365](https://github.com/databk/rustdesk-console/issues/365)) ([a2fcac9](https://github.com/databk/rustdesk-console/commit/a2fcac90ffafc0608e9da6a70285554c86b3c316))
+* **dashboard:** merge userGroups and deviceGroups into single groups count ([#361](https://github.com/databk/rustdesk-console/issues/361)) ([b929b1c](https://github.com/databk/rustdesk-console/commit/b929b1cf62be0aebb51502d8250aac031a720cbc))
+* **heartbeat:** align response fields with rustdesk client ([#336](https://github.com/databk/rustdesk-console/issues/336)) ([ca2532f](https://github.com/databk/rustdesk-console/commit/ca2532f7d64c3a2a74254d255bc7cde8df14632e))
+* **sea:** handle MODULE_NOT_FOUND in require patch for native modules ([#356](https://github.com/databk/rustdesk-console/issues/356)) ([7650158](https://github.com/databk/rustdesk-console/commit/7650158a65f227abcfae93727bb62c277c8446ed))
+
+
+### Features
+
+* **audit:** adapt to new fields from RustDesk client audit reports ([#357](https://github.com/databk/rustdesk-console/issues/357)) ([04cbbda](https://github.com/databk/rustdesk-console/commit/04cbbda3ed83be405a7329620c2eac6ccccd8b85)), closes [#1](https://github.com/databk/rustdesk-console/issues/1) [#2](https://github.com/databk/rustdesk-console/issues/2) [#3](https://github.com/databk/rustdesk-console/issues/3) [#4](https://github.com/databk/rustdesk-console/issues/4)
+* **audit:** record console management operations ([#359](https://github.com/databk/rustdesk-console/issues/359)) ([86993f3](https://github.com/databk/rustdesk-console/commit/86993f3ad58370426a1c67bf4a19b89383d0f0e5))
+* **ci:** add musl builds for SEA executables ([#335](https://github.com/databk/rustdesk-console/issues/335)) ([8e4c333](https://github.com/databk/rustdesk-console/commit/8e4c3330eded9a1e3d528745c043643288288e1b))
+* **dashboard:** redesign dashboard API with consolidated endpoints and restructured data model ([#360](https://github.com/databk/rustdesk-console/issues/360)) ([ecb6989](https://github.com/databk/rustdesk-console/commit/ecb698991d702a6e688d007e5a421ef4ad85d443))
+* **database:** add MySQL database support ([#330](https://github.com/databk/rustdesk-console/issues/330)) ([8f9d447](https://github.com/databk/rustdesk-console/commit/8f9d4475246a468bd383a227d394249ea84b5061))
+* **oidc:** add icon field and return common-oidc format in login options ([#337](https://github.com/databk/rustdesk-console/issues/337)) ([641bb5d](https://github.com/databk/rustdesk-console/commit/641bb5df9b89f0d5728219ffc1dc99265b8b0026))
+* **rbac:** enforce fine-grained console permissions ([#310](https://github.com/databk/rustdesk-console/issues/310)) ([cbbf7ce](https://github.com/databk/rustdesk-console/commit/cbbf7ce86a524e7f8880bb2a03995efb99031bde))
+* **settings:** add audit retention days to general settings API ([#308](https://github.com/databk/rustdesk-console/issues/308)) ([660c51d](https://github.com/databk/rustdesk-console/commit/660c51d9f0d6ce8e4f9e58eb04bb000784b82c24))
+* **settings:** make JWT token expiry configurable via settings/general API ([#306](https://github.com/databk/rustdesk-console/issues/306)) ([5476354](https://github.com/databk/rustdesk-console/commit/5476354e7bcbe137a6562255e41f877585b94e5e))
+* **user:** add admin password reset via security endpoint ([#329](https://github.com/databk/rustdesk-console/issues/329)) ([28d31d1](https://github.com/databk/rustdesk-console/commit/28d31d1e262e200b0f3c11c701f9b826bde258a1)), closes [#289](https://github.com/databk/rustdesk-console/issues/289)
+
+
+
 ## [1.8.1](https://github.com/databk/rustdesk-console/compare/1.8.0...1.8.1) (2026-08-26)
 
 
@@ -77,18 +105,6 @@
 
 * add nexus module for custom client generation ([#192](https://github.com/databk/rustdesk-console/issues/192)) ([a8c0fcf](https://github.com/databk/rustdesk-console/commit/a8c0fcfede80ee2d5a591e283361540ddfa1edb3))
 * add update check module ([#182](https://github.com/databk/rustdesk-console/issues/182)) ([b952d41](https://github.com/databk/rustdesk-console/commit/b952d414071635675c328ce22cbbb1cf4e8ed64a))
-
-
-
-## [1.5.1](https://github.com/databk/rustdesk-console/compare/1.5.0...1.5.1) (2026-06-26)
-
-
-### Bug Fixes
-
-* map os field to standardized platform constants in /ab/peers response ([#178](https://github.com/databk/rustdesk-console/issues/178)) ([c1b0d67](https://github.com/databk/rustdesk-console/commit/c1b0d676717d7d93631d9d0358380d63d328775d)), closes [#175](https://github.com/databk/rustdesk-console/issues/175)
-* merge saved LDAP config when testing connection ([#180](https://github.com/databk/rustdesk-console/issues/180)) ([7390ca5](https://github.com/databk/rustdesk-console/commit/7390ca54a364c7f91933239ac72aeed6b68774d8))
-* specify varchar type for User.email column ([#181](https://github.com/databk/rustdesk-console/issues/181)) ([924bcda](https://github.com/databk/rustdesk-console/commit/924bcdaf6834b7face280e931db0070878767069))
-* store null instead of empty string for user email to avoid unique constraint violation ([#176](https://github.com/databk/rustdesk-console/issues/176)) ([cff06b7](https://github.com/databk/rustdesk-console/commit/cff06b77fbf009eab533730935f542ee8bc83395)), closes [#173](https://github.com/databk/rustdesk-console/issues/173)
 
 
 

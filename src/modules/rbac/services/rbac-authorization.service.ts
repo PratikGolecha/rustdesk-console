@@ -464,6 +464,7 @@ export class RbacAuthorizationService {
       select: ['guid', 'isAdmin'],
     });
     if (!target) throw new NotFoundException('User does not exist');
+    this.assertSystemOwnerIsNotRemoved(target, permissionCode);
     if (await this.isProtectedUser(targetGuid, target.isAdmin, manager)) {
       try {
         await this.requireSuperAdmin(actorGuid, manager);
@@ -500,6 +501,9 @@ export class RbacAuthorizationService {
       where: { guid: In(uniqueGuids) },
       select: ['guid', 'isAdmin'],
     });
+    for (const user of users) {
+      this.assertSystemOwnerIsNotRemoved(user, permissionCode);
+    }
     const protectedGuids = await this.getProtectedUserGuids(
       users.map((user) => user.guid),
       users.filter((user) => user.isAdmin).map((user) => user.guid),
@@ -518,6 +522,18 @@ export class RbacAuthorizationService {
           error,
         );
       }
+    }
+  }
+
+  private assertSystemOwnerIsNotRemoved(
+    target: Pick<User, 'isAdmin'>,
+    permissionCode: PermissionCode,
+  ): void {
+    if (
+      target.isAdmin &&
+      (permissionCode === 'users.status' || permissionCode === 'users.delete')
+    ) {
+      throw new ForbiddenException('The system owner account cannot be disabled or deleted');
     }
   }
 

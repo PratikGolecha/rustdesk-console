@@ -3,16 +3,12 @@ import {
   IsNotEmpty,
   IsOptional,
   IsObject,
-  IsNumber,
-  Min,
-  IsInt,
   IsArray,
   ArrayMaxSize,
   ArrayMinSize,
   IsIn,
-  Max,
 } from 'class-validator';
-import { Type } from 'class-transformer';
+import { PaginationQueryDto } from '../../../common/dto/pagination.dto';
 
 export class CreateStrategyDto {
   @IsString()
@@ -54,21 +50,7 @@ export class AssignStrategyDto {
   target_guids: string[];
 }
 
-export class StrategyQueryDto {
-  @IsNumber()
-  @Min(1)
-  @Max(100000)
-  @IsInt()
-  @Type(() => Number)
-  current: number;
-
-  @IsNumber()
-  @Min(1)
-  @Max(200)
-  @IsInt()
-  @Type(() => Number)
-  pageSize: number;
-
+export class StrategyQueryDto extends PaginationQueryDto {
   @IsString()
   @IsOptional()
   name?: string;
@@ -80,44 +62,16 @@ export class StrategyCandidateDto {
   note: string;
 }
 
-export class StrategyTargetCandidateQueryDto {
+export class StrategyTargetCandidateQueryDto extends PaginationQueryDto {
   @IsString()
   @IsNotEmpty()
   @IsIn(['device', 'user'])
   target_type: 'device' | 'user';
-
-  @IsNumber()
-  @Min(1)
-  @Max(100000)
-  @IsInt()
-  @Type(() => Number)
-  current: number;
-
-  @IsNumber()
-  @Min(1)
-  @Max(200)
-  @IsInt()
-  @Type(() => Number)
-  pageSize: number;
 }
 
-export class AssignmentQueryDto {
+export class AssignmentQueryDto extends PaginationQueryDto {
   @IsString()
   @IsNotEmpty()
   @IsIn(['device', 'user', 'device_group'])
   target_type: 'device' | 'user' | 'device_group';
-
-  @IsNumber()
-  @Min(1)
-  @Max(100000)
-  @IsInt()
-  @Type(() => Number)
-  current: number;
-
-  @IsNumber()
-  @Min(1)
-  @Max(200)
-  @IsInt()
-  @Type(() => Number)
-  pageSize: number;
 }

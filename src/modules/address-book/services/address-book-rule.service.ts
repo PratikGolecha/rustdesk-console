@@ -90,7 +90,7 @@ export class AddressBookRuleService {
     // Check whether the user has permission to access this address book
     await this.permissionService.checkAddressBookAccess(query.ab, userId);
 
-    const { ab, current = 1, pageSize = 30 } = query;
+    const { ab, current = 1, pageSize = 20 } = query;
 
     // Query the total count
     const total = await this.ruleRepository.count({
@@ -396,7 +396,7 @@ export class AddressBookRuleService {
   }
 
   async getCustomAddressBooks(userId: string, query: PaginationDto) {
-    const { current = 1, pageSize = 100, name } = query;
+    const { current = 1, pageSize = 20, name } = query;
     const skip = (current - 1) * pageSize;
 
     const queryBuilder = this.addressBookRepository
@@ -518,7 +518,7 @@ export class AddressBookRuleService {
     sharedOnly: boolean,
     guid?: string,
   ) {
-    const { current = 1, pageSize = 100, name } = query;
+    const { current = 1, pageSize = 20, name } = query;
     const skip = (current - 1) * pageSize;
 
     const user = await this.userRepository.findOne({

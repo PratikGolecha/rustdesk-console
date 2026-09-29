@@ -299,8 +299,9 @@ export class AuthPasskeyService {
       });
     }
 
-    const user = await this.userRepository.findOne({
-      where: { guid: credential.userGuid },
+    const user = await this.authUserHelper.findByGuid(credential.userGuid, {
+      withTfaSecret: true,
+      withPassword: true,
     });
 
     if (!user) {

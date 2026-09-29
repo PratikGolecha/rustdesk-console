@@ -1,23 +1,11 @@
-import { IsNumber, Min, IsInt, IsString, IsOptional } from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsString, IsOptional } from 'class-validator';
+import { PaginationQueryDto } from '../../../common/dto/pagination.dto';
 
 /**
  * User query DTO
  * Used to fetch the list of accessible users
  */
-export class UserQueryDto {
-  @IsNumber()
-  @Min(1)
-  @IsInt()
-  @Type(() => Number)
-  current: number;
-
-  @IsNumber()
-  @Min(1)
-  @IsInt()
-  @Type(() => Number)
-  pageSize: number;
-
+export class UserQueryDto extends PaginationQueryDto {
   @IsString()
   @IsOptional()
   accessible?: string; // an empty string means fetch accessible users

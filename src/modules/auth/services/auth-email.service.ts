@@ -124,7 +124,10 @@ export class AuthEmailService {
       throw new UnauthorizedException({ error: 'Incorrect verification code' });
     }
 
-    const user = await this.authUserHelper.findByUsernameOrEmail(username);
+    const user = await this.authUserHelper.findByUsernameOrEmail(username, {
+      withTfaSecret: true,
+      withPassword: true,
+    });
 
     if (!user || user.guid !== session.userGuid) {
       throw new UnauthorizedException({ error: 'User info mismatch' });

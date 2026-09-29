@@ -3,14 +3,11 @@ import {
   IsNotEmpty,
   IsOptional,
   IsBoolean,
-  IsNumber,
-  IsInt,
-  Min,
   IsUrl,
   IsEnum,
 } from 'class-validator';
-import { Type } from 'class-transformer';
 import { OidcProviderType } from '../entities/oidc-provider.entity';
+import { PaginationQueryDto } from '../../../common/dto/pagination.dto';
 
 export class CreateOidcProviderDto {
   @IsEnum(OidcProviderType)
@@ -131,16 +128,4 @@ export class ToggleOidcProviderDto {
   enabled: boolean;
 }
 
-export class OidcProviderQueryDto {
-  @IsNumber()
-  @Min(1)
-  @IsInt()
-  @Type(() => Number)
-  current: number;
-
-  @IsNumber()
-  @Min(1)
-  @IsInt()
-  @Type(() => Number)
-  pageSize: number;
-}
+export class OidcProviderQueryDto extends PaginationQueryDto {}

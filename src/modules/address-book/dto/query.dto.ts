@@ -1,41 +1,18 @@
 import {
-  IsNumber,
   IsString,
   IsOptional,
-  Min,
   IsNotEmpty,
   IsArray,
   IsEnum,
 } from 'class-validator';
-import { Type, Transform } from 'class-transformer';
+import { Transform } from 'class-transformer';
+import { PaginationQueryDto } from '../../../common/dto/pagination.dto';
 
 /**
  * Paginated query data transfer object
  * Used to support paginated queries of list data
  */
-export class PaginationDto {
-  /**
-   * Current page number
-   * Counting starts from 1
-   * Default value: 1
-   */
-  @IsOptional()
-  @Type(() => Number)
-  @IsNumber()
-  @Min(1)
-  current?: number = 1;
-
-  /**
-   * Items per page
-   * Controls the number of records returned per page
-   * Default value: 100
-   */
-  @IsOptional()
-  @Type(() => Number)
-  @IsNumber()
-  @Min(1)
-  pageSize?: number = 100;
-
+export class PaginationDto extends PaginationQueryDto {
   /**
    * Name filter
    * Used to filter address books by name

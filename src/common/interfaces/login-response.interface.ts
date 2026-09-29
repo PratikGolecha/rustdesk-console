@@ -39,5 +39,9 @@ export interface LoginResponse {
     is_admin: boolean;
     /** Third-party authentication type */
     third_auth_type?: string;
+    /** Whether TOTP 2FA is enabled (returned only when the server has loaded the TFA secret field) */
+    tfa_enabled?: boolean;
+    /** Whether a local password is set (returned only when the server has loaded the password field) */
+    has_password?: boolean;
   };
 }

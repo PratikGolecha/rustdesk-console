@@ -248,6 +248,7 @@ export class AuthTfaService {
 
     const user = await this.authUserHelper.findByGuid(session.userGuid, {
       withTfaSecret: true,
+      withPassword: true,
     });
 
     if (!user) {

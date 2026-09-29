@@ -1,32 +1,11 @@
-import {
-  IsString,
-  IsNumber,
-  Min,
-  IsInt,
-  IsOptional,
-  IsIn,
-} from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsString, IsOptional, IsIn } from 'class-validator';
+import { PaginationQueryDto } from '../../../common/dto/pagination.dto';
 
 /**
  * Device query DTO
  * Used to fetch the list of accessible devices; supports pagination and multi-condition filtering
  */
-export class PeerQueryDto {
-  @IsOptional()
-  @Type(() => Number)
-  @IsNumber()
-  @Min(1)
-  @IsInt()
-  current?: number = 1;
-
-  @IsOptional()
-  @Type(() => Number)
-  @IsNumber()
-  @Min(1)
-  @IsInt()
-  pageSize?: number = 100;
-
+export class PeerQueryDto extends PaginationQueryDto {
   @IsOptional()
   @IsString()
   accessible?: string; // compatibility field; an empty string means fetch all accessible devices

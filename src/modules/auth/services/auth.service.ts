@@ -374,7 +374,10 @@ export class AuthService {
     userGuid: string,
     _currentUserDto?: CurrentUserDto,
   ): Promise<Record<string, unknown>> {
-    const user = await this.authUserHelper.findByGuid(userGuid);
+    const user = await this.authUserHelper.findByGuid(userGuid, {
+      withPassword: true,
+      withTfaSecret: true,
+    });
 
     if (!user) {
       throw new UnauthorizedException('User does not exist');

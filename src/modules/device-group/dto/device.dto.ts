@@ -1,30 +1,11 @@
-import {
-  IsNumber,
-  Min,
-  IsInt,
-  IsString,
-  IsOptional,
-  IsIn,
-} from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsString, IsOptional, IsIn } from 'class-validator';
+import { PaginationQueryDto } from '../../../common/dto/pagination.dto';
 
 /**
  * Device query DTO
  * Used to fetch the device list
  */
-export class DeviceQueryDto {
-  @IsNumber()
-  @Min(1)
-  @IsInt()
-  @Type(() => Number)
-  current: number;
-
-  @IsNumber()
-  @Min(1)
-  @IsInt()
-  @Type(() => Number)
-  pageSize: number;
-
+export class DeviceQueryDto extends PaginationQueryDto {
   @IsString()
   @IsOptional()
   id?: string;

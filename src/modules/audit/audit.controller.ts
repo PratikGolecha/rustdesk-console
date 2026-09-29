@@ -15,6 +15,9 @@ import {
   ActiveConnectionQueryDto,
   ConnectionAuditQueryDto,
   UpdateConnectionAuditDto,
+  FileAuditQueryDto,
+  AlarmAuditQueryDto,
+  ConsoleAuditQueryDto,
 } from './dto/connection-audit.dto';
 import { FileAuditDto } from './dto/file-audit.dto';
 import { AlarmAuditDto } from './dto/alarm-audit.dto';
@@ -215,32 +218,13 @@ export class AuditsController {
    * - Requires the audit.view permission
    * - Only administrators can query audit records
    *
-   * @param deviceId Controlled device ID (fuzzy match)
-   * @param type File transfer type (0: SEND, 1: RECEIVE)
-   * @param startTime Start time (ISO 8601 format)
-   * @param endTime End time (ISO 8601 format)
-   * @param pageSize Records per page
-   * @param current Current page number
+   * @param query Query parameters (pagination and filter conditions)
    * @returns File audit list
    */
   @RequirePermission('audit.view')
   @Get('file')
-  async queryFileAudits(
-    @Query('deviceId') deviceId?: string,
-    @Query('type') type?: number,
-    @Query('startTime') startTime?: string,
-    @Query('endTime') endTime?: string,
-    @Query('pageSize') pageSize?: number,
-    @Query('current') current?: number,
-  ) {
-    return await this.auditService.queryFileAudits({
-      deviceId,
-      type,
-      startTime,
-      endTime,
-      pageSize,
-      current,
-    });
+  async queryFileAudits(@Query() query: FileAuditQueryDto) {
+    return await this.auditService.queryFileAudits(query);
   }
 
   /**
@@ -257,32 +241,13 @@ export class AuditsController {
    * - Requires the audit.view permission
    * - Only administrators can query audit records
    *
-   * @param deviceId Controlled device ID (fuzzy match)
-   * @param type Alarm type
-   * @param startTime Start time (ISO 8601 format)
-   * @param endTime End time (ISO 8601 format)
-   * @param pageSize Records per page
-   * @param current Current page number
+   * @param query Query parameters (pagination and filter conditions)
    * @returns Alarm audit list
    */
   @RequirePermission('audit.view')
   @Get('alarm')
-  async queryAlarmAudits(
-    @Query('deviceId') deviceId?: string,
-    @Query('type') type?: number,
-    @Query('startTime') startTime?: string,
-    @Query('endTime') endTime?: string,
-    @Query('pageSize') pageSize?: number,
-    @Query('current') current?: number,
-  ) {
-    return await this.auditService.queryAlarmAudits({
-      deviceId,
-      type,
-      startTime,
-      endTime,
-      pageSize,
-      current,
-    });
+  async queryAlarmAudits(@Query() query: AlarmAuditQueryDto) {
+    return await this.auditService.queryAlarmAudits(query);
   }
 
   /**
@@ -298,34 +263,21 @@ export class AuditsController {
    * - Requires the audit.view permission
    * - Only administrators can query audit records
    *
-   * @param operator Operator (fuzzy match)
-   * @param pageSize Records per page
-   * @param current Current page number
-   * @param start_time Start time (UTC time string)
-   * @param end_time End time (UTC time string)
+   * @param query Query parameters (pagination and filter conditions)
    * @returns Console audit list
    */
   @RequirePermission('audit.view')
   @Get('console')
-  queryConsoleAudits(
-    @Query('operator') operator?: string,
-    @Query('action') action?: string,
-    @Query('target_type') targetType?: string,
-    @Query('result') result?: 'allowed' | 'denied',
-    @Query('pageSize') pageSize?: number,
-    @Query('current') current?: number,
-    @Query('start_time') startTime?: string,
-    @Query('end_time') endTime?: string,
-  ) {
+  queryConsoleAudits(@Query() query: ConsoleAuditQueryDto) {
     return this.auditService.queryConsoleAudits({
-      operator,
-      action,
-      targetType,
-      result,
-      pageSize,
-      current,
-      startTime,
-      endTime,
+      operator: query.operator,
+      action: query.action,
+      targetType: query.target_type,
+      result: query.result,
+      pageSize: query.pageSize,
+      current: query.current,
+      startTime: query.start_time,
+      endTime: query.end_time,
     });
   }
 }
